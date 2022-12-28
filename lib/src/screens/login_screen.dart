@@ -8,6 +8,10 @@ class LoginScreen extends StatefulWidget {
 
 class LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
+
+  String email = '';
+  String password = '';
+
   Widget build(context) {
     return Container(
       margin: EdgeInsets.all(30.0),
@@ -34,17 +38,33 @@ class LoginScreenState extends State<LoginScreen> {
         labelText: 'Email Address',
         hintText: 'you@exampl.com',
       ),
+      validator: (value) {
+        if (value == null || !value.contains('@')) {
+          return 'Please enter a valid email';
+        }
+      },
+      onSaved: (newValue) {
+        email = newValue!;
+      },
     );
   }
 
   Widget passwordField() {
     return TextFormField(
-      obscureText: false,
+      obscureText: true,
       // ignore: prefer_const_constructors
       decoration: InputDecoration(
         labelText: 'Password',
         hintText: 'Password',
       ),
+      validator: (value) {
+        if (value == null || value.length < 8) {
+          return 'Password must be greater than 8 characters';
+        }
+      },
+      onSaved: (newValue) {
+        password = newValue!;
+      },
     );
   }
 
@@ -56,7 +76,12 @@ class LoginScreenState extends State<LoginScreen> {
       ),
       // ignore: prefer_const_constructors
       child: Text('Submit'),
-      onPressed: () {},
+      onPressed: () {
+        if (formKey.currentState!.validate()) {
+          formKey.currentState!.save();
+          print('time to post $email and $password to api');
+        }
+      },
     );
   }
 }
