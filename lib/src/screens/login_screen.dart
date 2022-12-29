@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../mixing/validation_mixing.dart';
 
 class LoginScreen extends StatefulWidget {
   createState() {
@@ -6,7 +7,7 @@ class LoginScreen extends StatefulWidget {
   }
 }
 
-class LoginScreenState extends State<LoginScreen> {
+class LoginScreenState extends State<LoginScreen> with ValidationMixing {
   final formKey = GlobalKey<FormState>();
 
   String email = '';
@@ -38,11 +39,7 @@ class LoginScreenState extends State<LoginScreen> {
         labelText: 'Email Address',
         hintText: 'you@exampl.com',
       ),
-      validator: (value) {
-        if (value == null || !value.contains('@')) {
-          return 'Please enter a valid email';
-        }
-      },
+      validator: validateEmail,
       onSaved: (newValue) {
         email = newValue!;
       },
@@ -57,11 +54,7 @@ class LoginScreenState extends State<LoginScreen> {
         labelText: 'Password',
         hintText: 'Password',
       ),
-      validator: (value) {
-        if (value == null || value.length < 8) {
-          return 'Password must be greater than 8 characters';
-        }
-      },
+      validator: validatePassword,
       onSaved: (newValue) {
         password = newValue!;
       },
